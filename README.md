@@ -1,6 +1,6 @@
 # Transfer Learning Project: Widsdatathon
 
-## Project Report: Image Classification Using Convolutional Neural Networks and Transfer Learning
+## Image Classification Using Convolutional Neural Networks and Transfer Learning
 
 ### Introduction
 **Project Objective:**
