@@ -165,7 +165,8 @@ Experiments were conducted to reshape the images to a larger dimension (256x256)
 - **EfficientNet:**
   - Undersampled & Augmented: 85% dropped to 73% after reshaping.
 
-![ROC-AUC Scores](Wids Datathon graph.jpg)
+![ROC-AUC Scores](./path/to/Wids_Datathon_graph.jpg)
+
 
 ---
 
