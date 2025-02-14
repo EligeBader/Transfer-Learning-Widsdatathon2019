@@ -1,96 +1,156 @@
-# Transfer Learning Project: Widsdatathon
+# 🌍 WiDS Datathon 2019 Image Classification Project
 
-## Image Classification Using Convolutional Neural Networks and Transfer Learning
+**Deep Learning | Transfer Learning | Image Classification | Kaggle | Data Science**
 
-### Introduction
-**Project Objective:**
-- Experimenting with different deep learning models for image classification tasks to achieve high Area Under the Curve (AUC) scores.
+---
 
-**Scope:**
-- Utilizing various sampling techniques and tuning parameters with models such as MobileNet, ResNet50, ResNet101, and EfficientNet.
+### 📄 Description
+In advance of the March 4, 2019, Global WiDS Conference, the Global WiDS team, the West Big Data Innovation Hub, and the WiDS Datathon Committee collaborated with Planet and Figure Eight to bring a dataset of high-resolution satellite imagery to participants. The aim is to build awareness about deforestation and oil palm plantations through this predictive analytics challenge focused on social impact.
 
-**Overview:**
-- Convolutional neural networks (CNNs) and transfer learning were employed to enhance the performance of image classification.
+### 🌴 Why Oil Palm?
+Deforestation due to the growth of oil palm plantations has significant economic and environmental impacts. While oil palm is present in many everyday products, its cultivation has led to deforestation, increased carbon emissions, and biodiversity loss. However, it also provides many valuable jobs. This challenge aims to develop affordable, timely, and scalable methods to address the expansion and management of oil palm plantations globally.
 
-### Dataset Analysis
-**Number of Features and Type:**
-- Train folder: 11,000 Images with a size of 256x256 in color.
-- Test folder: 9,013 Images with size 256x256 in color.
-- Leaderboard folder: 2,178 Images with size 256x256 in color.
-- Train labels: 15,244 rows (image labels for training), 3 columns.
-- Test labels: 4,356 rows (image labels for testing), 3 columns.
-- Holdout labels: 2,178 rows (image labels for testing), 3 columns.
+### 📊 Evaluation
+Submissions are evaluated on the Area under the ROC curve (AUC) between the predicted probability and the observed target (has_oilpalm).
 
-**Target Class Balance:**
-- We are dealing with very imbalanced data.
-- Class distribution: {0: 8968, 1: 322}.
-    - Class 0: doesn't have oilpalm.
-    - Class 1: has oilpalm.
 
-**Data Transformation:**
-- Resizing: Initially, images were resized to 224x224x3.
-- Normalization: The images were normalized by dividing by 255.
-- Augmentation: Data augmentation techniques were applied using ImageDataGenerator with parameters like rescale, rotation, width shift, height shift, shear, zoom, horizontal flip, and fill mode.
+### 📁 Dataset Description
+- **train_images/image_[9-digit number].jpg:** Training images from Planet.
+- **traininglabels.csv:** Crowdsourced annotations/labels of the presence or absence of oil palm in the training data.
+- **leaderboard_test_data/image_[9-digit number].jpg:** Test images from Planet.
+- **SampleSubmission.csv:** Sample submission file in the correct format.
 
-**Summary and Assumptions:**
-- Class Imbalance Handling: Techniques such as oversampling the minority class or undersampling the majority class were employed.
-- Transfer Learning: Utilizing pre-trained models with resized images to 224x224x3.
-- Model Performance Metrics: Focus on achieving high AUC scores.
-- Data Augmentation: Applied to increase the diversity of the training data.
+**Data Fields:**
+- **image_id:** An anonymous ID unique to a given image.
+- **has_oilpalm:** Annotation or label for a given image (0 for no oil palm, 1 for presence of oil palm plantations).
+- **score:** Confidence score based on the aggregated results from crowdsourcing the annotations.
 
-### Methodology
-**Model Selection:**
-- MobileNet: Efficient in terms of computation.
-- ResNet50: Balanced approach to accuracy and computational load.
-- ResNet101: Higher accuracy at the cost of more resources.
-- EfficientNet: Uses a compound scaling method.
+### 🛠 Tools & Technologies
+- **Python 3.8+:** Primary programming language
+- **TensorFlow & Keras:** For building and training deep learning models
+- **Pandas:** For data manipulation and analysis
+- **OpenCV:** For image processing
+- **Scikit-learn:** For machine learning tools and evaluation metrics
+- **Imbalanced-learn:** For handling imbalanced datasets
 
-**Fine-Tuning:**
-- Added Flatten Layer, Dense Layer (512 Units, 'relu'), and Output Layer (2 Units, 'softmax').
+### 🔄 Workflow
 
-### Implementation
-**Tools and Libraries:**
-- TensorFlow and Keras for building and training models.
-- NumPy and pandas for data manipulation and preprocessing.
+1. **Libraries and Data Loading:**
+    - Imported the necessary libraries for data manipulation, image processing, and deep learning.
+    - Loaded the dataset using functions to read images and CSV files.
 
-**Data Preprocessing:**
-- Undersampling and Data Augmentation.
-- Undersampling then Oversampling using SMOTE.
+2. **Data Preprocessing:**
+    - **Image Preprocessing:** Resized and normalized the images to prepare them for model training.
+    - **Label Encoding:** Transformed categorical labels into numerical format.
+    - **Handling Duplicates and Missing Values:** Cleaned the data by handling duplicates and missing values in the annotations.
 
-**Training Process:**
-- Initial Training: 3 Epochs, Adam optimizer with a learning rate of 0.001.
-- Experimental Phase: 5 Epochs, Adam optimizer with learning rates of 0.001 and 0.0001.
-- Extended Training with Callback: 10 Epochs, learning rate 0.001.
+3. **Data Splitting:**
+    - Split the data into training, validation, and test sets to build and evaluate models. Used stratified sampling to ensure balanced classes in each set.
 
-**Validation and Testing:**
-- Combined test and holdout datasets.
-- Evaluation Metrics: AUC.
+4. **Resampling Techniques:**
+    - **Undersampling and SMOTE:** Used RandomUnderSampler and SMOTE to handle imbalanced data by undersampling the majority class and oversampling the minority class.
 
-### Analysis
-**Performance Metrics:**
-- MobileNet: Original 83%, Undersampled & Augmented 80%, Undersampled to Oversampled 75%.
-- ResNet50: Original 57%, Undersampled & Augmented 73%, Undersampled to Oversampled 58%.
-- ResNet101: Original 53%, Undersampled & Augmented 57%, Undersampled to Oversampled 56%.
-- EfficientNet: Original 50%, Undersampled & Augmented 85%, Undersampled to Oversampled 47%.
+5. **Data Augmentation:**
+    - Applied data augmentation techniques to increase the diversity of the training data and prevent overfitting. Techniques included rotation, width and height shifts, shear transformation, zoom, and horizontal flip.
 
-**Reshaping Image Dimensions:**
-- MobileNet: AUC dropped from 83% to 67%.
-- ResNet50: AUC dropped from 73% to 41%.
-- EfficientNet: AUC dropped from 85% to 73%.
+6. **Model Training:**
+    - **Transfer Learning:** Used pre-trained models like MobileNet, ResNet50, ResNet101, and EfficientNetB0 to leverage existing knowledge for feature extraction.
+    - **Fine-Tuning:** Fine-tuned the pre-trained models on the satellite imagery dataset to improve performance.
 
-**Parameter Tuning:**
-- Increased Epochs and adjusted learning rates for EfficientNet.
+7. **Prediction:**
+    - Made predictions on the test set using the trained models. Generated probabilities for the target variable (has_oilpalm).
 
-### Summary
-- MobileNet showed strong initial performance but declined with undersampling and augmentation.
-- ResNet50 benefitted significantly from undersampling and augmentation.
-- ResNet101 showed modest improvements.
-- EfficientNet was the standout performer with undersampling and augmentation.
+8. **Evaluation:**
+    - Evaluated the models using metrics like ROC-AUC, accuracy, precision, recall, and F1-score to determine their performance.
 
-### Recommendation for Further Improvement
-- Hyperparameter Optimization: Grid Search or Random Search.
-- Transfer Learning: Explore other pre-trained models.
-- Ensemble Learning: Combine predictions from multiple models.
-- Regularization Techniques: Dropout, L2 regularization, batch normalization.
-- Advanced Augmentation: Use generative models like GANs.
-- Learning Rate Schedulers: Implement adaptive learning rate schedulers.
+### 📂 Project Structure
+
+```
+- WiDS_Datathon_2019_Image_Classification
+  - data/
+    - leaderboard_holdout_data/
+    - leaderboard_test_data/
+    - train_images/
+    - holdout.csv
+    - SampleSubmission.csv
+    - testlabels.csv
+    - traininglabels.csv
+  - models/
+    - mobilnet_model_resample.pickle
+    - resnet50_model_resample.pickle
+    - resnet101_model_resample.pickle
+    - efficientnet_model_resample.pickle
+    - mobilnet_model_undersampled.pickle
+    - resnet50_model_undersampled.pickle
+    - resnet101_model_undersampled.pickle
+    - efficientnet_model_args.pickle
+    - efficientnet_model_args1.pickle
+  - notebooks/
+    - report.ipynb
+    - train_resample.ipynb
+    - train_undersampled&Aug.ipynb
+    - Transfer_Learn_test.ipynb
+    - Transfer_Learn_train.ipynb
+  - scripts/
+    - helper_functions.py
+  - submission/
+    - predictions_mobilnet.csv
+    - predictions_resnet50.csv
+    - predictions_resnet101.csv
+    - predictions_efficientnet.csv
+  - README.md
+```
+
+### 🧩 Models and Results
+
+- **MobileNet:**
+    - Leveraged the MobileNet architecture for efficient feature extraction.
+    - Applied undersampling and data augmentation techniques.
+    - ROC-AUC: 83% (Original), 80% (Undersampled & Augmented), 75% (Undersampled to Oversampled)
+
+- **ResNet50:**
+    - Used the ResNet50 model to capture deeper features and enhance classification accuracy.
+    - Applied undersampling and data augmentation techniques.
+    - ROC-AUC: 57% (Original), 73% (Undersampled & Augmented), 58% (Undersampled to Oversampled)
+
+- **ResNet101:**
+    - Applied the ResNet101 model for more advanced feature extraction and robust performance.
+    - Applied undersampling and data augmentation techniques.
+    - ROC-AUC: 53% (Original), 57% (Undersampled & Augmented), 56% (Undersampled to Oversampled)
+
+- **EfficientNet:**
+    - Utilized the EfficientNetB0 model for state-of-the-art image classification.
+    - Applied undersampling and data augmentation techniques.
+    - ROC-AUC: 50% (Original), 85% (Undersampled & Augmented), 47% (Undersampled to Oversampled)
+
+### 📊 Impact of Reshaping Image Dimensions
+- Experiments were conducted to reshape the images to a larger dimension (256x256) for the three best-performing models:
+    - **MobileNet:**
+        - Original (83%) dropped to 67% after reshaping.
+    - **ResNet50:**
+        - Undersampled & Augmented (73%) dropped to 41% after reshaping.
+    - **EfficientNet:**
+        - Undersampled & Augmented (85%) dropped to 73% after reshaping.
+
+### 🌟 Best Model and Parameter Tuning
+- **Best Model: EfficientNet** (Undersampled & Augmented):
+    - Achieved the highest AUC score of 85%.
+    - Further parameter tuning efforts included:
+        - Increased Epochs to 5 & reduced learning rate to 0.0001: AUC Score = 82%
+        - Increased Epochs to 5 & learning rate to 0.001: AUC Score = 77%
+        - Added Callback and Early Stopping with epoch=10 and learning rate= .001: AUC Score = 54%
+
+### 🚀 Recommendations for Further Improvement
+1. **Hyperparameter Optimization:**
+    - Utilize techniques like Grid Search or Random Search to systematically explore a wider range of hyperparameter combinations.
+2. **Transfer Learning:**
+    - Explore other pre-trained models or fine-tune more layers within EfficientNet to leverage their learned features more effectively.
+3. **Ensemble Learning:**
+    - Combine predictions from multiple models (e.g., MobileNet, ResNet50, EfficientNet) using techniques like voting or stacking to potentially improve overall performance.
+4. **Regularization Techniques:**
+    - Experiment with regularization methods such as dropout, L2 regularization, or batch normalization to reduce overfitting and enhance model robustness.
+5. **Advanced Augmentation:**
+    - Use more sophisticated data augmentation techniques, possibly including generative models like GANs (Generative Adversarial Networks) to create additional synthetic training data.
+6. **Learning Rate Schedulers:**
+    - Implement adaptive learning rate schedulers that adjust the learning rate dynamically during training, potentially leading to better convergence.
+    
