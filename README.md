@@ -1,4 +1,4 @@
-# 🌍 WiDS Datathon 2019 Image Classification Project
+# 🌍 WiDS Datathon Image Classification Project
 
 ![Deep Learning](https://img.shields.io/badge/Deep%20Learning-blue)
 ![Transfer Learning](https://img.shields.io/badge/Transfer%20Learning-green)
